@@ -1,4 +1,4 @@
-from pytube import YouTube
+from pytube import YouTube, Caption
 import os
 # YouTube('http://youtube.com/watch?v=9bZkp7q19f0').streams.first().download()
 
@@ -19,7 +19,7 @@ def capture_vid_captions(url: str, out_dir: str):
 
 
 
-def get_captions(yt: YouTube) -> Youtube.Caption:
+def get_captions(yt: YouTube) -> Caption:
     captions = yt.captions.get_by_language_code('en')
     assert captions is not None
     # sort by length, we want to prefer non generated
