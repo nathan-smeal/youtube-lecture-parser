@@ -8,6 +8,6 @@ class TestIntClass:
         """This tests download functionality as integration test.
         Not a unit test.
         """
-        test_url = ""
-        # citizen's aaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrest
+        # test_url = ""
+        # citizen's aaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
         assert 0
