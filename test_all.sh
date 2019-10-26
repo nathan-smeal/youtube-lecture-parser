@@ -1,0 +1,1 @@
+pytest --strict-markers

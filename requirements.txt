@@ -6,3 +6,7 @@ django-filter
 markdown
 numpy
 opencv-python
+black
+flake8
+yapf
+pre-commit # conda-forge

@@ -1,4 +1,12 @@
 from scraping import scraper
+import pytest
 
-def test_caption_dl():
-    assert 0
+
+@pytest.mark.web_integration
+class TestIntClass:
+    def test_caption_dl(self):
+        """This tests download functionality as integration test.
+        Not a unit test.
+        """
+        test_url = ""
+        assert 0
