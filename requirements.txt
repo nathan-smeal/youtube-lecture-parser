@@ -1,12 +1,12 @@
-pytest>=3.0.7
-logzero  # see github.com/metachris/logzero
-pytube
-djangorestframework
+black
 django-filter
+djangorestframework
+flake8
+logzero  # see github.com/metachris/logzero
 markdown
 numpy
 opencv-python
-black
-flake8
+pre-commit # see conda-forge
+pytest>=3.0.7
+pytube
 yapf
-pre-commit # conda-forge

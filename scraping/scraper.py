@@ -4,7 +4,7 @@ import os
 # YouTube('http://youtube.com/watch?v=9bZkp7q19f0').streams.first().download()
 
 
-def capture_vid_captions(url: str, out_dir: str):
+def capture_vid_captions(url: str, out_dir: str) -> bool:
     yt = YouTube(url)
     title = yt.title
     c: YouTube.Caption
@@ -14,10 +14,19 @@ def capture_vid_captions(url: str, out_dir: str):
         out_path = os.path.join(out_dir, title)
         os.makedirs(out_path)
         srt_path = os.path.join(out_path, f"{title}.srt")
-        with open(srt_path, "w") as srt_fp:
-            srt_fp.write(caption.generate_srt_captions())
+        mp4_path = os.path.join(out_path, f"{title}.mp4")
+        try:
+            with open(srt_path, "w") as srt_fp:
+                srt_fp.write(caption.generate_srt_captions())
 
-        vid = yt.streams.first().download()
+            vid = yt.streams.first().download()
+            with open(mp4_path, "w") as mp4_fp:
+                mp4_fp.write(vid)
+        except IOError as e:
+            print(e)
+            return False
+
+    return True
 
 
 def get_captions(yt: YouTube) -> Caption:

@@ -11,7 +11,7 @@ import argparse
 from logzero import logger
 
 
-def main(args):
+def main(args: dict) -> None:
     """ Main entry point of the app """
     logger.info("hello world")
     logger.info(args)
@@ -42,5 +42,5 @@ if __name__ == "__main__":
         version="%(prog)s (version {version})".format(version=__version__),
     )
 
-    args = parser.parse_args()
+    args = dict(parser.parse_args())
     main(args)
