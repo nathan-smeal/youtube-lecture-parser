@@ -1,12 +1,13 @@
 from pytube import YouTube, Caption
 import os
 
+
 # YouTube('http://youtube.com/watch?v=9bZkp7q19f0').streams.first().download()
 
 
-def capture_vid_captions(url: str, out_dir: str) -> bool:
+def capture_vid_captions(url: str, out_dir: str, title="test") -> bool:
     yt = YouTube(url)
-    title = yt.title
+    # title = yt.title
     c: YouTube.Caption
 
     caption = get_captions(yt)
@@ -30,8 +31,9 @@ def capture_vid_captions(url: str, out_dir: str) -> bool:
 
 
 def get_captions(yt: YouTube) -> Caption:
-    captions = yt.captions.get_by_language_code("en")
+    captions = yt.captions.all()
     assert captions is not None
     # sort by length, we want to prefer non generated
     # we will use
-    return captions.sort(key=lambda x: len(x.lang))[0]
+    # return [x.name.lower() == "english" for x in captions][0]
+    return captions.filter(lambda x: x.name.lower() == "English")[0]
