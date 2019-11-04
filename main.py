@@ -9,12 +9,17 @@ __license__ = "MIT"
 
 import argparse
 from logzero import logger
+from scraping import scraper
 
 
-def main(args: dict) -> None:
+def main(args: argparse.Namespace) -> None:
     """ Main entry point of the app """
-    logger.info("hello world")
     logger.info(args)
+    success = scraper.capture_vid_captions(args.url, args.out)
+    if success:
+        logger.info("Video succesfully processed")
+    else:
+        logger.info("There was a problem with processing.  Check the logs.")
 
 
 if __name__ == "__main__":
@@ -22,7 +27,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # Required positional argument
-    parser.add_argument("arg", help="Required positional argument")
+    parser.add_argument("url", help="Youtube url")
+    parser.add_argument("-o", "--out", help="Output dir", default="./output/")
 
     # Optional argument flag which defaults to False
     parser.add_argument("-f", "--flag", action="store_true", default=False)
@@ -42,5 +48,5 @@ if __name__ == "__main__":
         version="%(prog)s (version {version})".format(version=__version__),
     )
 
-    args = dict(parser.parse_args())
+    args = parser.parse_args()
     main(args)
