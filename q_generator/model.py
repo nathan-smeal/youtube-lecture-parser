@@ -2,7 +2,7 @@
 """
 
 from abc import ABCMeta, abstractclassmethod, abstractmethod, ABC
-
+from .popo import Question
 
 class Model(ABC):
     def __init__(self):
@@ -11,5 +11,5 @@ class Model(ABC):
     def load_captions(self, captions):
         pass
 
-    def generate_questions(self):
+    def generate_questions(self) -> [Question]:
         assert self.info_loaded
