@@ -10,4 +10,8 @@ class TestPopoClass:
         """This tests the simple question data class
         """
         inputs = {"question": "Question Text", "answer": "test answer"}
-        popo.Question(**inputs)
+        actual = popo.Question(**inputs)
+        assert actual.answer == inputs['answer']
+        assert actual.question == inputs['question']
+        assert actual.frame == None
+        assert actual.yt_link == ''
