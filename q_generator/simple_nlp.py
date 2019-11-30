@@ -1,12 +1,13 @@
 import spacy
 from scraping import clean_srt_nlp
 import pandas as pd
+import re
 
-
-nlp = spacy.load("en_core_web_sm")
 
 
 def get_top_entities(srt_input):
+    nlp = spacy.load("en_core_web_sm")
+
     cleaned = clean_srt_nlp.remove_time_stamps(srt_input)
     cn = nlp(cleaned)
     print([(word, word.ent_type_) for word in cn if word.ent_type_])
@@ -42,4 +43,5 @@ def get_top_entities(srt_input):
 
 def remove_markup(srt_str: str) -> str:
     result = srt_str
+    result = re.sub(r'(\[[^\[\]]*\])|(\*.*\*)','', result)
     return result
