@@ -11,7 +11,7 @@ class TestPopoClass:
         """
         inputs = {"question": "Question Text", "answer": "test answer"}
         actual = popo.Question(**inputs)
-        assert actual.answer == inputs['answer']
-        assert actual.question == inputs['question']
-        assert actual.frame == None
-        assert actual.yt_link == ''
+        assert actual.answer == inputs["answer"]
+        assert actual.question == inputs["question"]
+        assert actual.frame is None
+        assert actual.yt_link == ""

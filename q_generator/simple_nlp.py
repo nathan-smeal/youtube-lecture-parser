@@ -4,7 +4,6 @@ import pandas as pd
 import re
 
 
-
 def get_top_entities(srt_input):
     nlp = spacy.load("en_core_web_sm")
 
@@ -43,5 +42,5 @@ def get_top_entities(srt_input):
 
 def remove_markup(srt_str: str) -> str:
     result = srt_str
-    result = re.sub(r'(\[[^\[\]]*\])|(\*.*\*)','', result)
+    result = re.sub(r"(\[[^\[\]]*\])|(\*.*\*)", "", result)
     return result

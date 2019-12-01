@@ -1,5 +1,6 @@
 from q_generator.simple_nlp import remove_markup
 
+
 class TestMarkupSanitizer:
     def test_bracket_removal(self):
         test_input = "[narrator] actual text"
