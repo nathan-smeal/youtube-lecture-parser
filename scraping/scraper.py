@@ -1,6 +1,7 @@
 from pytube import YouTube, Caption
 import os
 from logzero import logger
+from correlator.correlator import correlate_video
 
 
 # YouTube('http://youtube.com/watch?v=9bZkp7q19f0').streams.first().download()
@@ -24,6 +25,8 @@ def capture_vid_captions(url: str, out_dir: str, title=None) -> bool:
                 srt_fp.write(caption.generate_srt_captions())
             out_fp = stream.download(output_path=out_path, filename=f"{title}")
             logger.info(out_fp)
+            # TODO actually utilize these results
+            correlate_video(out_path, srt_path, url)
             # with open(mp4_path, "w") as mp4_fp:
             #     mp4_fp.write(vid)
         except IOError as e:
