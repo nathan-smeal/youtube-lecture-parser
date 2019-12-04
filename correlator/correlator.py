@@ -17,8 +17,9 @@ def correlate_video(input_vid, input_srt, yt_link) -> List[Correlation]:
     result = []
     cap = cv2.VideoCapture(input_vid)
     fps = cap.get(cv2.CAP_PROP_FPS)
-
-    print(fps)
+    logger.info(input_vid)
+    logger.info(input_srt)
+    logger.info(yt_link)
 
     def totalTime(end_time: datetime.time):
         return (
@@ -32,8 +33,8 @@ def correlate_video(input_vid, input_srt, yt_link) -> List[Correlation]:
 
     calc_timestamps = [0.0]
     subs = pysrt.open(input_srt)
-    for sub in subs:
-        print(sub)
+    # for sub in subs:
+    #     print(sub)
     #  test : pysrt.SubRipItem..end
     isubs = iter(subs)
     # passtype:  pysrt.SubRipItem
@@ -79,6 +80,6 @@ def correlate_video(input_vid, input_srt, yt_link) -> List[Correlation]:
     return result
 
 
-def perform_ocr(img: np.Array):
+def perform_ocr(img: np.ndarray):
     d = pytesseract.image_to_data(img, output_type=Output.DATAFRAME)
     return d

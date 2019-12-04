@@ -8,7 +8,7 @@ from correlator.correlation import Correlation
 
 
 class Model(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self.info_loaded = False
 
     def start(self):

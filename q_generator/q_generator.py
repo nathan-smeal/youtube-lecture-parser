@@ -27,5 +27,7 @@ class QuestionGenerator(object):
         # todo make this async gather
         for i in inputs:
             for m in self.models:
-                result.append(m.process_correlation(i))
+                curr = m.process_correlation(i)
+                if curr is not None:
+                    result.append(curr)
         return result[:-top_num]

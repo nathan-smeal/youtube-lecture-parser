@@ -1,13 +1,14 @@
 from pytube import YouTube, Caption
 import os
 from logzero import logger
-from correlator.correlator import correlate_video
+from correlator.correlator import correlate_video, Correlation
+from typing import List
 
 
 # YouTube('http://youtube.com/watch?v=9bZkp7q19f0').streams.first().download()
 
 
-def capture_vid_captions(url: str, out_dir: str, title=None) -> bool:
+def capture_vid_captions(url: str, out_dir: str, title=None) -> List[Correlation]:
     yt = YouTube(url)
     # title = yt.title
     c: YouTube.Caption
@@ -26,14 +27,15 @@ def capture_vid_captions(url: str, out_dir: str, title=None) -> bool:
             out_fp = stream.download(output_path=out_path, filename=f"{title}")
             logger.info(out_fp)
             # TODO actually utilize these results
-            correlate_video(out_path, srt_path, url)
+            logger.info("Correlations next")
+            return correlate_video(out_fp, srt_path, url)
             # with open(mp4_path, "w") as mp4_fp:
             #     mp4_fp.write(vid)
         except IOError as e:
             logger.error(e)
-            return False
+            return []
 
-    return True
+    return []
 
 
 def get_captions(yt: YouTube) -> Caption:

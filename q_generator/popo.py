@@ -3,7 +3,7 @@ This file contains some simple data objects for use in question generating
 """
 from dataclasses import dataclass
 import numpy as np
-from sys import path
+from os import path
 import cv2
 import json
 
@@ -14,10 +14,9 @@ class BaseQuestion:
     question: str
     answer: str
     yt_link: str
-    test: int
     confidence: float
 
-    def base_to_file(self, out_dir):
+    def base_to_file(self, out_dir) -> None:
         img_out = path.join(out_dir, self.yt_link + ".json")
         with open(img_out, "w") as out:
             json.dump(self, out, skipkeys=True, sort_keys=True, indent=2)
