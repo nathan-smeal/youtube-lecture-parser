@@ -10,7 +10,7 @@ from .popo import BaseQuestion
 class OCRModel(Model):
     def __init__(self) -> None:
         super().__init__()
-        self.threshold = 0.80
+        self.threshold = 0.2
 
     def generate_questions(self) -> List[Question]:
         super().generate_questions

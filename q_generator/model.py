@@ -18,7 +18,8 @@ class Model(ABC):
         pass
 
     def load_captions(self, captions):
-        pass
+        # let each model handle pre-processing
+        self.captions = captions
 
     @abstractmethod
     def process_correlation(self, correlation: Correlation) -> BaseQuestion:
