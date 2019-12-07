@@ -30,7 +30,7 @@ class PosModel(Model):
         return nltk.pos_tag(tokens)
 
     def subject_phrase(self, pos: list):
-        chunkGram = r"""Chunk: {<WP.?>*<VB.?>*<NNP>+<NN>?}"""
+        chunkGram = r"""Chunk: {<WP.?><VB.?><NNP>+<NN>?<.>}"""
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(pos)
         # print(chunked)
@@ -52,10 +52,10 @@ class PosModel(Model):
             return None
         q = ""
         for subtree in chunk.subtrees(filter=lambda t: t.label() == "Chunk"):
-            q = " ".join([w for w, t in subtree.leaves()]) + "?"
+            q = " ".join([w for w, t in subtree.leaves()])
             chunk.remove(subtree)
         # assign rest as answer
-        a = " ".join([w for w, t in subtree.leaves()])
+        a = " ".join([w for w, t in chunk.leaves()])
 
         # create question obj
         bq = BaseQuestion(q, a, corr.yt_ts_link(), 1.0)  # TODO adjust confidence
