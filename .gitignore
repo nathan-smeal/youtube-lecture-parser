@@ -106,3 +106,4 @@ venv.bak/
 
 # ide
 .vscode/
+ipython_sessions/
