@@ -4,20 +4,14 @@
 from dataclasses import dataclass
 import numpy as np
 import pandas as pd
+from .text_correlation import TextCorrelation
 
 
 @dataclass
-class Correlation:
+class Correlation(TextCorrelation):
     "Class for correlation data for captions and frames"
-    caption: str
     ocr_boxes: pd.DataFrame
-    yt_link: str  # required now
     frame: np.array
-    timestamps: float
-
-    def yt_ts_link(self) -> str:
-        seconds = int(self.timestamps // 1000)
-        return f"{self.yt_link}?t={str(seconds)}s"
 
     def simple_score(self) -> float:
         # a separate NLP, another similarity may use cosine of vectorized sentences.

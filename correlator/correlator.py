@@ -42,7 +42,7 @@ def correlate_video(input_vid, input_srt, yt_link) -> List[Correlation]:
     mstime = totalTime(next_sub.end.to_time())
     # datetime.time.hou
     # print(next_sub.te)
-    print(next_sub.end.to_time().microsecond * 1000)
+    # print(next_sub.end.to_time().microsecond * 1000)
     # print(time.mktime(next_sub.end))
     while cap.isOpened():
         frame_exists, curr_frame = cap.read()
