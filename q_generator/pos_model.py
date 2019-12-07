@@ -9,6 +9,7 @@ from logzero import logging
 from correlator.text_correlation import TextCorrelation
 from nltk.tokenize import PunktSentenceTokenizer
 from nltk.tree import Tree
+from typing import List
 from .popo import BaseQuestion
 
 
@@ -81,6 +82,15 @@ class PosModel(Model):
             return self.chunk_to_question(chunked, correlation)
         else:
             return None
+
+    def q_from_c(self, corrs: List[TextCorrelation]) -> List[BaseQuestion]:
+        result = []
+        for c in corrs:
+            q = self.process_correlation(c)
+            if q is not None:
+                result.append(q)
+
+        return result
 
     def generate_questions(self):
         if self.captions is None:
