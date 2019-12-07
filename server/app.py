@@ -1,11 +1,16 @@
 from logzero import logging
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from correlator.caption_ts_correlator import captions_link
 from q_generator.pos_model import PosModel
 from q_generator.popo import BaseQuestion
 
 app = Flask(__name__)
 _VERSION = 1  # API version
+
+# route and function to handle the home page
+@app.route("/")
+def home_page():
+    return render_template("index.html")
 
 
 @app.route("/v{}/generate".format(_VERSION), methods=["POST"])

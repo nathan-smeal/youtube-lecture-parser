@@ -1,0 +1,1 @@
+curl -X POST http://localhost:5000/v1/generate -d '{"yt_url": "https://www.youtube.com/watch?v=5Q0FlxcEEIw"}' -H "Content-Type: application/json"
