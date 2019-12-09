@@ -19,7 +19,7 @@ python main.py www.youtube.com -o ./output_directory
 Microservice
 
 ```bash
-python main.py www.youtube.com -o ./output_directory
+python server_main.py
 ```
 
 ## Installation
