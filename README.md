@@ -2,6 +2,8 @@
 
 This repository pulls down and processes YouTube lectures that have captions.  It is intended to facilitate processing of posted lectures.
 
+Github link:  https://github.com/nathan-smeal/youtube-lecture-parser
+
 ## Usage
 
 For help on cli parameters:
