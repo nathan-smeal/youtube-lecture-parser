@@ -7,6 +7,8 @@ from q_generator.popo import BaseQuestion
 app = Flask(__name__)
 _VERSION = 1  # API version
 
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
+
 
 @app.route("/v{}/generate".format(_VERSION), methods=["POST"])
 def q_generate():

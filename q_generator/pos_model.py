@@ -39,6 +39,7 @@ class PosModel(Model):
         chunkGram = r"""Chunk: {<WP.?><VB.?><NNP>+<NN>?<.>}
                          Chunk: {<WP.?><VB.*><DT><NN.*>}
         """
+        # Removed some overly matching patterns
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(pos)
 
@@ -90,8 +91,8 @@ class PosModel(Model):
         tokens = self.tokenize(captions)
         pos = self.pos_tag(tokens)
 
-        ne_tree = nltk.ne_chunk(pos, True)
-        print(ne_tree)
+        _ = nltk.ne_chunk(pos, True)
+        # print(ne_tree)
         # # ne_only = ne_tree.subtrees(filter=lambda x: x.label() == 'NE')
         # for subtree in ne_tree.subtrees(filter=lambda x: x.label() == "NE"):
         #     print(subtree.leaves())

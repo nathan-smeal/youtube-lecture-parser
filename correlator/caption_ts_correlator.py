@@ -32,7 +32,7 @@ def correlate_captions(
         result = combine_subs(subRips, yt_link)
 
     # collapse correlations if needed
-    print(result)
+    # print(result)
     return result
 
 
@@ -42,7 +42,7 @@ def combine_subs(subs: List[SubRipItem], yt_link: str):
     next_sub = next(isubs, -1)
     if next_sub == -1:
         return []
-    last_corr = convert_subrip(next_sub, yt_link)
+    last_corr = convert_subrip(last_sub, yt_link)
     result = []
     while next_sub != -1:
 
