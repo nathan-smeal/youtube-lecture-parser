@@ -8,6 +8,7 @@ from pysrt.srttime import SubRipTime
 from pysrt.srtitem import SubRipItem
 from pysrt.srtfile import SubRipFile
 import datetime
+import string
 
 
 def correlate_captions(
@@ -23,20 +24,54 @@ def correlate_captions(
         List[TextCorrelation] -- Correlated timestamp hints
     """
     subRips: List[SubRipItem] = pysrt.from_string(caption_string)
+
     # need to handle end time for caption combining
-    result = [convert_subrip(s, yt_link) for s in subRips]
+    if not combine_sent:
+        result = [convert_subrip(s, yt_link) for s in subRips]
+    else:
+        result = combine_subs(subRips, yt_link)
 
     # collapse correlations if needed
-    if combine_sent:
-        pass
+    print(result)
+    return result
+
+
+def combine_subs(subs: List[SubRipItem], yt_link: str):
+    isubs = iter(subs)
+    last_sub = next(isubs, -1)
+    next_sub = next(isubs, -1)
+    if next_sub == -1:
+        return []
+    last_corr = convert_subrip(next_sub, yt_link)
+    result = []
+    while next_sub != -1:
+
+        next_corr = convert_subrip(next_sub, yt_link)
+        if canCombineCaption(last_sub, next_sub):
+            last_corr = combine(last_corr, next_corr)
+        else:
+            result.append(last_corr)
+            last_corr = convert_subrip(next_sub, yt_link)
+
+        last_sub = next_sub
+        next_sub = next(isubs, -1)
     return result
 
 
 def canCombineCaption(first: SubRipItem, second: SubRipItem, thresh=500) -> bool:
     # check if punctuation
-
+    punc = [".", "?", "!"]
+    eos = first.text.strip()[-1] in punc
+    close_time = (
+        totalTime(second.start.to_time()) - totalTime(first.end.to_time()) < thresh
+    )
     # check if start and end are close
-    return totalTime(second.start.to_time()) - totalTime(first.end.to_time()) < thresh
+    # print(first.text.strip()[-1])
+    # print(eos)
+    # if not eos and close_time:
+    #     print(first.text + "COMBINED WITH" + second.text)
+    # print(close_time)
+    return not eos and close_time
 
 
 def combine(corr1: TextCorrelation, corr2: TextCorrelation) -> TextCorrelation:
@@ -44,7 +79,7 @@ def combine(corr1: TextCorrelation, corr2: TextCorrelation) -> TextCorrelation:
     second = corr1 if corr1.timestamps > corr2.timestamps else corr2
 
     return TextCorrelation(
-        first.caption + second.caption, first.yt_link, first.timestamps
+        first.caption + " " + second.caption, first.yt_link, first.timestamps
     )
 
 
@@ -79,6 +114,9 @@ def captions_link(yt_link: str) -> Tuple[str, List[TextCorrelation]]:
     c = get_captions(yt)
 
     raw_caption = c.generate_srt_captions()
+    if True:
+        with open("current.srt", "w") as out:
+            out.write(raw_caption)
 
     captions = correlate_captions(raw_caption, yt_link)
 

@@ -24,6 +24,7 @@ class PosModel(Model):
         nltk.download("maxent_ne_chunker")
         nltk.download("words")
         nltk.download("stopwords")
+        # nltk.download('stanfordNERtagger')
 
     def tokenize(self, text: str):
         result = remove_markup(text)
@@ -34,9 +35,13 @@ class PosModel(Model):
         return nltk.pos_tag(tokens)
 
     def subject_phrase(self, pos: list):
-        chunkGram = r"""Chunk: {<WP.?><VB.?><NNP>+<NN>?<.>}"""
+        # chunk here for what is type phrases
+        chunkGram = r"""Chunk: {<WP.?><VB.?><NNP>+<NN>?<.>}
+                         Chunk: {<WP.?><VB.*><DT><NN.*>}
+        """
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(pos)
+
         # print(chunked)
         is_chunk = False
         for subtree in chunked.subtrees(filter=lambda t: t.label() == "Chunk"):
@@ -78,7 +83,7 @@ class PosModel(Model):
         super().load_captions(captions)
         # pre-process for NER
         captions = clean_srt_nlp.remove_time_stamps(captions)
-        captions = captions.lower()
+        # captions = captions.lower()
         # captions = captions.translate(None, string.punctuation)
         translator = str.maketrans("", "", string.punctuation)
         captions = captions.translate(translator)
@@ -87,20 +92,20 @@ class PosModel(Model):
 
         ne_tree = nltk.ne_chunk(pos, True)
         print(ne_tree)
-        # ne_only = ne_tree.subtrees(filter=lambda x: x.label() == 'NE')
-        for subtree in ne_tree.subtrees(filter=lambda x: x.label() == "NE"):
-            print(subtree.leaves())
-        stopwords = set(nltk.corpus.stopwords.words("english"))
-        filtered_sentences = [w for w in ne_tree if w not in stopwords]
-        # filtered_sentences = []
+        # # ne_only = ne_tree.subtrees(filter=lambda x: x.label() == 'NE')
+        # for subtree in ne_tree.subtrees(filter=lambda x: x.label() == "NE"):
+        #     print(subtree.leaves())
+        # stopwords = set(nltk.corpus.stopwords.words("english"))
+        # filtered_sentences = [w for w in ne_tree if w not in stopwords]
+        # # filtered_sentences = []
 
-        # for w in tokens:
-        #     if w not in stopwords:
-        #         filtered_sentences.append(w)
-        # print(filtered_sentences)
-        ner_freq = nltk.probability.FreqDist(filtered_sentences)
-
-        print(ner_freq.most_common(10))
+        # # for w in tokens:
+        # #     if w not in stopwords:
+        # #         filtered_sentences.append(w)
+        # # print(filtered_sentences)
+        # ner_freq = nltk.probability.FreqDist(filtered_sentences)
+        # if False:
+        #     print(ner_freq.most_common(10))
         # print(ne_tree)
 
     def process_correlation(self, correlation: TextCorrelation):
