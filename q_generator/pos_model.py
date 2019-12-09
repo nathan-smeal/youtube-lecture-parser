@@ -11,18 +11,21 @@ from nltk.tokenize import PunktSentenceTokenizer
 from nltk.tree import Tree
 from typing import List
 from .popo import BaseQuestion
+import string
 
 
 class PosModel(Model):
     # TODO:  Uncomment this out after ipython session (bug on reload)
-    # def __init__(self):
-    #     super().__init__()
+    def __init__(self) -> None:
+        super().__init__()
 
-    #     nltk.download("punkt")
-    #     nltk.download('averaged_perceptron_tagger')
+        nltk.download("punkt")
+        nltk.download("averaged_perceptron_tagger")
+        nltk.download("maxent_ne_chunker")
+        nltk.download("words")
+        nltk.download("stopwords")
 
     def tokenize(self, text: str):
-        # result = clean_srt_nlp.remove_time_stamps(text)
         result = remove_markup(text)
         result = nltk.word_tokenize(result)
         return result
@@ -71,8 +74,34 @@ class PosModel(Model):
         # no tf model or anything that requires stopping
         pass
 
-    def load_captions(self, captions):
-        return super().load_captions(captions)
+    def load_captions(self, captions: str) -> None:
+        super().load_captions(captions)
+        # pre-process for NER
+        captions = clean_srt_nlp.remove_time_stamps(captions)
+        captions = captions.lower()
+        # captions = captions.translate(None, string.punctuation)
+        translator = str.maketrans("", "", string.punctuation)
+        captions = captions.translate(translator)
+        tokens = self.tokenize(captions)
+        pos = self.pos_tag(tokens)
+
+        ne_tree = nltk.ne_chunk(pos, True)
+        print(ne_tree)
+        # ne_only = ne_tree.subtrees(filter=lambda x: x.label() == 'NE')
+        for subtree in ne_tree.subtrees(filter=lambda x: x.label() == "NE"):
+            print(subtree.leaves())
+        stopwords = set(nltk.corpus.stopwords.words("english"))
+        filtered_sentences = [w for w in ne_tree if w not in stopwords]
+        # filtered_sentences = []
+
+        # for w in tokens:
+        #     if w not in stopwords:
+        #         filtered_sentences.append(w)
+        # print(filtered_sentences)
+        ner_freq = nltk.probability.FreqDist(filtered_sentences)
+
+        print(ner_freq.most_common(10))
+        # print(ne_tree)
 
     def process_correlation(self, correlation: TextCorrelation):
         tokened = self.tokenize(correlation.caption)
@@ -83,8 +112,10 @@ class PosModel(Model):
         else:
             return None
 
-    def q_from_c(self, corrs: List[TextCorrelation]) -> List[BaseQuestion]:
+    def q_from_c(self, corrs: List[TextCorrelation], text="") -> List[BaseQuestion]:
         result = []
+        if text != "":
+            self.load_captions(text)
         for c in corrs:
             q = self.process_correlation(c)
             if q is not None:

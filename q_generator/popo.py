@@ -7,6 +7,13 @@ from os import path
 import cv2
 import json
 
+from json import JSONEncoder
+
+
+class MyEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
 
 @dataclass
 class BaseQuestion:
@@ -17,9 +24,14 @@ class BaseQuestion:
     confidence: float
 
     def base_to_file(self, out_dir) -> None:
-        img_out = path.join(out_dir, self.yt_link + ".json")
+        img_out = path.join(
+            out_dir,
+            self.yt_link.replace("https://www.youtube.com/watch?v=", "") + ".json",
+        )
         with open(img_out, "w") as out:
-            json.dump(self, out, skipkeys=True, sort_keys=True, indent=2)
+            json.dump(
+                MyEncoder().encode(self), out, skipkeys=True, sort_keys=True, indent=2
+            )
 
 
 @dataclass

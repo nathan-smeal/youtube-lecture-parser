@@ -16,6 +16,11 @@ Example use case:
 python main.py www.youtube.com -o ./output_directory
 ```
 
+Microservice
+
+```bash
+python main.py www.youtube.com -o ./output_directory
+```
 
 ## Installation
 
@@ -25,7 +30,7 @@ If on ubuntu or debian based you can run the bash script `install_tesseract.sh`.
 
 If on windows reference the tesseract website instructions.
 
-https://github.com/tesseract-ocr/tesseract/wiki
+<https://github.com/tesseract-ocr/tesseract/wiki>
 
 ### Install Conda
 
@@ -59,8 +64,3 @@ There are 3 test bash scripts, but the cli should be the same between OS.
 * `test_unit.sh`
 
 These are relatively straight forward to running all or a subset of tests.  For clarity, `test_int.sh` is all of the integration tests that hit outside resources.  `test_unit.sh` only does unit tests and should be quick.
-
-
-## Acknowledgements
-
-## References

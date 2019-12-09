@@ -17,7 +17,7 @@ class Model(ABC):
     def stop(self):
         pass
 
-    def load_captions(self, captions):
+    def load_captions(self, captions: str) -> None:
         # let each model handle pre-processing
         self.captions = captions
 
